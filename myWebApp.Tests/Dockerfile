@@ -19,11 +19,15 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Build runtime image
-FROM microsoft/aspnetcore
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "mywebapp.tests.dll"]
+ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
+# OR
+# ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
+# OR
+# ENTRYPOINT ["dotnet"]
+# AND 
+# C:\IntelliTect\DockerLearning\myWebApp.Tests>docker run -i -t --name mytestcontainer mywebapptests dotnet test
 
+
+# Currently working:
 # D:\Projects\DockerLearning\myWebApp.Tests>docker build -t mywebapptests .
-# ???
+# C:\IntelliTect\DockerLearning\myWebApp.Tests>docker run -i -t --name mytestcontainer mywebapptests
