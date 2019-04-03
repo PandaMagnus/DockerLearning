@@ -10,7 +10,10 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:aspnetcore-runtime #AS aspnetapp
+FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "aspnetapp.dll"]
+ENTRYPOINT ["dotnet", "mywebapp.dll"]
+
+# D:\Projects\DockerLearning\myWebApp>docker build -t mywebapp .
+# D:\Projects\DockerLearning\myWebApp>docker run -d -p 5000:80 --name myappcontainer mywebapp

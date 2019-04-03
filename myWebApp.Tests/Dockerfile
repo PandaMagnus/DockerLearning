@@ -1,12 +1,15 @@
-FROM microsoft/dotnet:sdk AS build-env
-WORKDIR /app
+# Install Powershell
+FROM microsoft/powershell
+
+# Install Chocolatey
+RUN powershell -Command iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'));
 
 # Install Chrome
-# FROM mcr.microsoft.com/powershell
-#FROM microsoft/windowsservercore
-FROM microsoft/powershell
-RUN powershell -Command iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'));
-RUN choco install googlechrome --ignore-checksums
+RUN choco install googlechrome --ignore-checksums -y
+
+# This probably won't work. Need to copy Chrome from prior build stage to this one.
+FROM microsoft/dotnet:sdk AS build-env
+WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
@@ -17,7 +20,10 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:aspnetcore-runtime
+FROM microsoft/aspnetcore
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "aspnetapp.dll"]
+ENTRYPOINT ["dotnet", "mywebapp.tests.dll"]
+
+# D:\Projects\DockerLearning\myWebApp.Tests>docker build -t mywebapptests .
+# ???
