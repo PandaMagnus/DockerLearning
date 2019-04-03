@@ -19,7 +19,7 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
+ENTRYPOINT ["dotnet", "test"]
 # OR
 # ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
 # OR
