@@ -5,10 +5,11 @@ FROM microsoft/powershell
 RUN powershell -Command iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'));
 
 # Install Chrome
-RUN choco install googlechrome --ignore-checksums -y
+RUN choco install googlechrome -y
+RUN choco install dotnetcore-sdk -y
 
 # This probably won't work. Need to copy Chrome from prior build stage to this one.
-FROM microsoft/dotnet:sdk AS build-env
+# FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -19,7 +20,7 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-ENTRYPOINT ["dotnet", "test"]
+# ENTRYPOINT ["dotnet", "test"]
 # OR
 # ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
 # OR
