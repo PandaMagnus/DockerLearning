@@ -1,15 +1,13 @@
-# Install Powershell
-FROM microsoft/powershell
+## Use Windows Server Core to get all the necessary bits for Chrome to work as expected
+FROM microsoft/windowsservercore
 
-# Install Chocolatey
+## Install Chocolatey
 RUN powershell -Command iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'));
 
-# Install Chrome
+## Install Chrome and dotnet core
 RUN choco install googlechrome -y
 RUN choco install dotnetcore-sdk -y
 
-# This probably won't work. Need to copy Chrome from prior build stage to this one.
-# FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -20,15 +18,6 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# ENTRYPOINT ["dotnet", "test"]
-# OR
-# ENTRYPOINT ["dotnet", "test", "mywebapp.tests.dll"]
-# OR
-# ENTRYPOINT ["dotnet"]
-# AND 
-# C:\IntelliTect\DockerLearning\myWebApp.Tests>docker run -i -t --name mytestcontainer mywebapptests dotnet test
-
-
 # Currently working:
-# D:\Projects\DockerLearning\myWebApp.Tests>docker build -t mywebapptests .
-# C:\IntelliTect\DockerLearning\myWebApp.Tests>docker run -i -t --name mytestcontainer mywebapptests
+# .\DockerLearning\myWebApp.Tests>docker build -t mywebapptests .
+# .\DockerLearning\myWebApp.Tests>docker run -it --name mytestcontainer mywebapptests

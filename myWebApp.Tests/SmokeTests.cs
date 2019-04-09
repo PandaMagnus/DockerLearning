@@ -16,21 +16,17 @@ namespace myWebApp.Tests
             Output = output;
             var options = new ChromeOptions();
             options.AddArgument("--headless");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--no-sandbox");
             Output.WriteLine("Launching Chrome...");
-            //string chromeDriverLocation = Path.Combine(".");
-            string chromeDriverLocation = "C:\\app";
-            Output.WriteLine($"Search location for Chromedriver: {chromeDriverLocation}");
-            IWebDriver driver = new ChromeDriver(chromeDriverLocation);
-            IWebDriver driver2 = new ChromeDriver(chromeDriverLocation, options);
-            //Browser = new Browser(new ChromeDriver(Path.Combine("."), options));
-            //Browser = new Browser(new ChromeDriver("C:\\app", options));
+            Browser = new Browser(new ChromeDriver(Path.Combine("."), options));
+            //Browser.Driver.Navigate().GoToUrl("http://www.google.com");
             Browser.Driver.Navigate().GoToUrl("http://localhost:5000");
         }
 
         [Fact]
         public void VerifySiteLaunches()
         {
-            Output.WriteLine("Running test VerifySiteLaunches...");
             Assert.Contains("Hello, world!", Browser.Driver.PageSource);
             Output.WriteLine("Test passes!");
         }

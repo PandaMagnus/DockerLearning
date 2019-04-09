@@ -16,5 +16,5 @@ COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "mywebapp.dll"]
 
 # Currently working:
-# D:\Projects\DockerLearning\myWebApp>docker build -t mywebapp .
-# D:\Projects\DockerLearning\myWebApp>docker run -d -p 5000:80 --name myappcontainer mywebapp
+# .\DockerLearning\myWebApp>docker build -t mywebapp .
+# .\DockerLearning\myWebApp>docker run -d -p 5000:80 --name myappcontainer mywebapp
